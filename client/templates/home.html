@@ -357,7 +357,7 @@ url: /
           </div>
           <div class="list-card-details small-9 grid-content">
             <h3>{{video.title | limitTo: 95}}</h3>
-            <div>{{video.rating | number}} {{video.upvotes}}<span ng-hide="video.rating==1">s</span> | {{video.timestamp | date:'MMM d, yyyy'}}</div>
+            <div>{{video.rating | number}} {{video.upvotes}}<span ng-hide="video.rating==1">s</span> | {{video.timestampGmt | date:'MMM d, yyyy'}}</div>
           </div>
           <a style="display: none;" href="#" ng-click="clickToPlay($event)" name="{{video.wpId}}" class="{{video.host}} wpId-{{video.wpId}} watch  button small" rel="{{video.permalink}}" id="{{video.id}}">
             watch
