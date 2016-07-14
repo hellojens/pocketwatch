@@ -319,8 +319,9 @@ url: /
         </div>
       </div>
     </div>
-    <div class="stream" ng-class="{'show': combined.length!='1'}">
-      <div class="videoItem" ng-repeat="video in (combined = (redditVideos.concat(wpPosts, ytvideos) | filter: selectedChannel | unique: 'id' | orderBy:order:true) ) track by $index" ng-class="$first ? 'playing' : ''" ng-click="sendIndex($index, video); setPlayingVideo(video); setNextVideo(combined[$index +1]); setPrevVideo(combined[$index -1]); myplayer.playVideo();" >
+    <div class="stream" ng-class="{'show': combined.length!='1'}" when-scrolled="loadMore()" percent="70">
+
+      <div class="videoItem" ng-repeat="video in (combined = (redditVideos.concat(wpPosts, ytvideos) | filter: selectedChannel | unique: 'id' | limitTo: totalDisplayed | orderBy:order:true) ) track by $index" ng-class="$first ? 'playing' : ''" ng-click="sendIndex($index, video); setPlayingVideo(video); setNextVideo(combined[$index +1]); setPrevVideo(combined[$index -1]); myplayer.playVideo();" >
 
         <div ng-if="selectedChannel!=currentUser.userName">
           <div class="dark card" style="background-image: url('{{video.thumbnail}}');" >
@@ -364,10 +365,7 @@ url: /
           </a>
         </div>
       </div>
-  </div>
-
-
-
-
+      <div class="spacer" style="clear: both;"></div>
+    </div>
 
 </div>

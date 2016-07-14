@@ -51,6 +51,7 @@ var paths = {
   // These files are for your app's JavaScript
   appJS: [
     'bower_components/ng-videosharing-embed/build/ng-videosharing-embed.min.js',
+    'bower_components/angular-scroll-complete/angular-scroll-complete.js',
     'https://www.youtube.com/iframe_api',
     'node_modules/angular-youtube-embed/dist/angular-youtube-embed.min.js',
     'client/assets/js/app.js'

@@ -406,13 +406,16 @@
     padding-right: 16px;
     width: 26%;
     height: 100%;
+    min-height: 100%;
     position: absolute;
     z-index: 7;
     top: 0;
     right: 0px;
-    overflow-x: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
     min-width: 250px;
-    box-shadow: -2px 1px 10px rgba(0, 0, 0, 0.56); }
+    box-shadow: -2px 1px 10px rgba(0, 0, 0, 0.56);
+
     .streamTabs {
       margin: 0;
       position: fixed;
@@ -457,8 +460,14 @@
 
       }
     }
+
     .stream {
       opacity: 0;
+      top: 0;
+      bottom: 0;
+      height: 100%;
+      overflow: auto;
+      padding-bottom: 50px;
       &.show {
         opacity: 1;
         transition-property: opacity;
@@ -468,6 +477,7 @@
       }
       .videoItem {
         position: relative;
+
         &.playing {
           .card {
             .gradient {
@@ -684,6 +694,7 @@
       }
 
     }
+  }
 
 }
 
@@ -745,6 +756,7 @@
   display: block;
   opacity: 1;
   text-align: center;
+  padding-top: 10%;
   &.hideLoading {
     opacity: 0;
     transition-property: opacity, height;
@@ -753,9 +765,7 @@
     transition-delay: 1s;
     height: 0;
   }
-  &.library {
-    padding-top: 10%;
-  }
+  .library {}
   &.libraryHeader {
     padding: 0;
     i {

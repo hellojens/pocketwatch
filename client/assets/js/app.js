@@ -10,7 +10,8 @@
     'foundation.dynamicRouting',
     'foundation.dynamicRouting.animations',
     'youtube-embed',
-    'videosharing-embed'
+    'videosharing-embed',
+    'angular-scroll-complete'
   ])
     .config(config)
     .run(run)
@@ -46,7 +47,6 @@
     })
 
   ;
-
 
 
   config.$inject = ['$urlRouterProvider', '$locationProvider', '$httpProvider'];
@@ -385,7 +385,7 @@
         // }
 
         // GET ALL POSTS BY AUTHORS
-        $http.get( apiHost + '/wp/v2/posts')
+        $http.get( apiHost + '/wp/v2/posts?per_page=100')
         .then( function(userPosts) {
           angular.forEach(userPosts.data, function(postData){
 
@@ -723,6 +723,16 @@
         }; // end if youtube videos
       });
     });
+
+
+    $scope.totalDisplayed = 10;
+    $scope.loadMore = function () {
+      console.log("load")
+     $scope.totalDisplayed += 20;
+    };
+
+    $scope.loadMore();
+
 
     // TEMP VIMEO GET GET
 
