@@ -12,6 +12,9 @@ var rimraf   = require('rimraf');
 var router   = require('front-router');
 var sequence = require('run-sequence');
 
+var request = require('request');
+var cheerio = require('cheerio');
+
 // Check for --production flag
 var isProduction = !!(argv.production);
 
@@ -22,7 +25,9 @@ var paths = {
   assets: [
     './client/**/*.*',
     '!./client/templates/**/*.*',
-    '!./client/assets/{scss,js}/**/*.*'
+    '!./client/assets/{scss,js}/**/*.*',
+    '!./client/assets/img/*.*',
+    './client/assets/img/*.*',
   ],
   // Sass will check these folders for files when you use @import.
   sass: [
@@ -31,6 +36,7 @@ var paths = {
   ],
   // These files include Foundation for Apps and its dependencies
   foundationJS: [
+    'bower_components/jquery/dist/jquery.js',
     'bower_components/fastclick/lib/fastclick.js',
     'bower_components/viewport-units-buggyfill/viewport-units-buggyfill.js',
     'bower_components/tether/tether.js',
@@ -44,6 +50,9 @@ var paths = {
   ],
   // These files are for your app's JavaScript
   appJS: [
+    'bower_components/ng-videosharing-embed/build/ng-videosharing-embed.min.js',
+    'https://www.youtube.com/iframe_api',
+    'node_modules/angular-youtube-embed/dist/angular-youtube-embed.min.js',
     'client/assets/js/app.js'
   ]
 }
@@ -168,7 +177,7 @@ gulp.task('default', ['server'], function () {
   gulp.watch(['./client/assets/js/**/*', './js/**/*'], ['uglify:app']);
 
   // Watch static files
-  gulp.watch(['./client/**/*.*', '!./client/templates/**/*.*', '!./client/assets/{scss,js}/**/*.*'], ['copy']);
+  gulp.watch(['./client/**/*.*', '!./client/templates/**/*.*', '!./client/assets/{scss,js}/**/*.*', './client/assets/img/*.*'], ['copy']);
 
   // Watch app templates
   gulp.watch(['./client/templates/**/*.html'], ['copy:templates']);

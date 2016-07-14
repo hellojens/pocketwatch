@@ -3,7 +3,371 @@ name: home
 url: /
 ---
 
-<div class="grid-container">
-  <h1>Welcome to Foundation for Apps!</h1>
-  <p class="lead">This is version <strong>1.1 Weisshorn</strong>.</p>
+<div class="appWrapper" ng-controller="mainController" ng-init="init()">
+
+  <div class="topbar"></div>
+
+  <div class="mainNav">
+    <div class="Channels">
+      <button class="channelsButton" ng-click="showMenuOverlay($event)">
+      CHANNELS <i class="fa fa-caret-down fa-lg" aria-hidden="true"></i>
+      </button>
+      <button class="addNewButton alert button" zf-open="addNewChannelModal">
+        ADD NEW {{getPctCompleted}}
+      </button>
+      <button class="addNewButton alert button hollow" zf-open="addExtensionModal" id="install-button">
+        GET CHROME EXTENSION
+      </button>
+
+      <div class="modalz large addExtensionModal" zf-modal="" id="addExtensionModal">
+        <a zf-close="" class="close-button">×</a>
+        <div class="grid-block">
+          <div class="medium-8 grid-content">
+          </div>
+          <div class="medium-4 grid-content">
+            <p>
+              The PocketWatch Button, lets you <b>Save</b> videos to your library <i>(cooming soon)</i> and <b>Repost</b> videos to the stream for others to enjoy.
+              <br /><br />
+              <button class="addNewButton alert button hollow" onclick="chrome.webstore.install()">
+                GET EXTENSION NOW
+              </button>
+              <div class="explanation">
+                When visiting a youtube video, the extension icon will light up. <b>Press it. Save it. Share it!</b>
+              </div>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="modalz" zf-modal="" id="addNewChannelModal">
+        <a zf-close="" class="close-button">×</a>
+        <div zf-tabs="">
+          <div zf-tab="" title="Reddit">
+            <br />
+            <h5>Search <b>Subreddits</b></h5>
+            <form class="grid-block">
+              <div class="medium-10 grid-block">
+                <input type="text" ng-model="$parent.subredditList.input" placeholder="e.g. /r/mealTimeVideos, Political videos, hot vimeo girls">
+              </div>
+              <div class="medium-2 grid-block">
+                <button class="searchButton float-right button" type="submit" ng-click="$parent.subredditList.search()">Search</button>
+              </div>
+            </form>
+            <ul ng-show="$parent.subredditSearch.length">
+              <li class="v-align" ng-repeat="searchResult in $parent.subredditSearch | orderObjectBy:'subscribers':true track by $index ">
+                <div class="center-align float-left">
+                  <a target="_bank" href="http://reddit.com/{{searchResult.url}}">
+                     <b>{{searchResult.title}}</b>
+                  </a><br />
+                  <div class="subheader">
+                    <span>{{searchResult.subscribers | number}} Subscribers</span> - {{searchResult.publicDescription | limitTo: 145 }}
+                  </div>
+                </div>
+                <button class="center-align button float-right" type="submit" ng-click="$parent.$parent.subredditList.add(searchResult.display_name, searchResult.url)">Add</button>
+              </li>
+            </ul>
+          </div>
+          <div zf-tab="" title="Youtube">
+            <br />
+            <h5>Search <b>Youtube Channels</b></h5>
+            <form class="grid-block">
+              <div class="medium-10 grid-block">
+                <input type="text" ng-model="$parent.ytChannelList.input" placeholder="e.g. The Verge, NPR Music, Comedy Central">
+              </div>
+              <div class="medium-2 grid-block">
+                <button class="searchButton float-right button" type="submit" ng-click="$parent.ytChannelList.search()">Search</button>
+              </div>
+            </form>
+            <ul ng-show="$parent.ytChannelSearch.length">
+              <li class="v-align" ng-repeat="ytSearchResult in $parent.ytChannelSearch | unique: 'channelId' | orderObjectBy:'subscribers':true track by $index  ">
+                <div class="grid-block shrink center-align">
+                  <img class="channelThumbnail" src="{{ytSearchResult.headerImageUrl}}" width="40" />
+                </div>
+                <div class="grid-block center-align">
+                  <div class="grind-content">
+                    <a target="_bank" href="{{ytSearchResult.url}}">
+                      <b>{{ytSearchResult.title}}</b>
+                    </a><br />
+                    <div class="subheader">
+                      <span>{{ytSearchResult.subscribers | number}} Subscribers</span> - {{ytSearchResult.publicDescription | limitTo: 110 }}
+                    </div>
+                  </div>
+                </div>
+                <button class="center-align button float-right" type="submit" ng-click="$parent.$parent.ytChannelList.add(ytSearchResult.display_name, ytSearchResult.channelId)">Add</button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div ng-show="currentUser.userName" class="currentUser float-right text-right">
+          {{currentUser.userNamePretty}}
+          <div ng-click="signOut()" class="headline">
+            Sign out
+          </div>
+      </div>
+
+      <div ng-hide="currentUser.userName" class="signIn float-right">
+        <img src="http://pocketwatchit.com/wp-content/uploads/2016/05/app-icon-big.png" /><br />
+        <h2><b>POCKETWATCH</b></h2><br />
+        <button class="addNewButton dark hollow button" zf-open="signInModal">
+          Sign in
+        </button>
+        <div class="modalz tiny text-center" zf-modal="" id="signInModal">
+          <a zf-close="" class="close-button">×</a>
+
+          <div zf-tabs="" >
+            <div zf-tab="" title="Log In">
+              <form method="post">
+                <div class="align-center grid-block">
+                  <input type="text" ng-model="$parent.signInInput.username" placeholder="Your Pretty Name" name="username" required>
+                </div>
+                <div class="align-center grid-block">
+                  <input type="password" ng-model="$parent.signInInput.password" placeholder="Password" name="password" required>
+                </div>
+                <div class="align-center grid-block">
+                  <button class="signInButton expand button" type="submit" name="submit" ng-click="$parent.signIn()">
+                    Sign In
+                  </button>
+                </div>
+              </form>
+            </div>
+            <div zf-tab="" title="Sign Up">
+              <form name="createNewUser">
+                <div class="align-center grid-block">
+                  <input type="text" ng-model="$parent.createUserInput.username" placeholder="Username" required>
+                </div>
+                <div class="align-center grid-block">
+                  <input type="text" ng-model="$parent.createUserInput.usernameDisplayName" placeholder="Your Pretty Name">
+                </div>
+                <div class="align-center grid-block">
+                  <input type="email" ng-model="$parent.createUserInput.email" placeholder="Email">
+                </div>
+                <div class="align-center grid-block">
+                  <input type="password" ng-model="$parent.createUserInput.password" placeholder="Password" required>
+                </div>
+                <div class="align-center grid-block">
+                  <button ng-disabled="createNewUser.$invalid" class="signInButton expand button" type="submit" ng-click="$parent.createNewUser()">
+                    createUser
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="validation">
+            <p>
+              {{validationMessage}}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="menuOverlayBackDrop"  ng-click="showMenuOverlay($event)">
+    </div>
+    <div class="menuOverlay">
+      <div class="menuContent">
+        <div class="menuListWrapper">
+          <div class="menuList">
+            <h5>CHANNELS</h5>
+            <ul class="menuListNav">
+              <li class="menuListItem">
+                <a href="" ng-click="showSlideOut($event)">
+                  <span>Reddit</span>
+                  <i class="icon fa fa-caret-right fa-lg" aria-hidden="true"></i>
+                </a>
+              </li>
+              <li class="menuListItem">
+                <a href="">
+                  <span>Youtube</span>
+                  <i class="icon fa fa-caret-right fa-lg" aria-hidden="true"></i>
+                </a>
+              </li>
+              <li class="menuListItem">
+                <a href="">
+                  <span>Vimeo</span>
+                  <i class="icon fa fa-caret-right fa-lg" aria-hidden="true"></i>
+                </a>
+              </li>
+            </ul>
+            <h6>Recently viewed</h6>
+            <ul class="menuListNav">
+              <li class="menuListItem">
+                <a href="#">
+                  <span>/r/videos</span>
+                </a>
+              </li>
+              <li class="menuListItem">
+                <a href="">
+                  <span>/r/mealTime</span>
+                </a>
+              </li>
+              <li class="menuListItem">
+                <a href="#">
+                  <span>The Verge</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="slideOut">
+            <div class="menuList">
+              <h5>Reddit</h5>
+              <ul class="menuListNav">
+                  <li class="menuListItem" ng-repeat="list in subscriptionList">
+                       <a href="#">
+                         <span>{{list.name}}</span>
+                         <i ng-click="subredditList.remove($index)" class="icon fa fa-close fa-lg" aria-hidden="true"></i>
+                       </a>
+                  </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="playerArea" ng-show="currentUser.userName" ng-class="{'show': combined.length!='1'}">
+    <div ng-repeat="video in (combined = (redditVideos.concat(wpPosts, ytvideos) | filter: selectedChannel  | unique: 'id' | orderBy: order:true) ) track by $index" ng-if="$index == selectedVideo">
+      <div class="player">
+        <button ng-click="skipNav($event)" class="playPrev" onclick="ga('send', 'event', 'button', 'clicked', 'player', 'watch prev')"></button>
+        <button ng-click="skipNav($event, next = true)" class="playNext" onclick="ga('send', 'event', 'button', 'clicked', 'player', 'watch Next')"></button>
+
+        <div ng-hide="video.host == 'vimeo.com'" ng-if="video.host == 'youtube.com' || 'youtu.be' || 'm.youtube.com'" class="flex-video widescreen vimeo youtubePlayer">
+          <youtube-video video-id="video.id" player="myplayer"></youtube-video>
+        </div>
+        <div ng-if="video.host == 'vimeo.com' "  class="flex-video widescreen vimeo vimeoPlayer">
+          <embed-video href="{{video.id}}" controls=0></embed-video>
+        </div>
+
+      </div>
+      <div class="videoPlayerInfo">
+        <h1 class="videoTitle">{{video.title}}</h1>
+        <a ng-show="video.permalink.length" class="source hollow button secondary small" target="sourceTarget" href="{{video.permalink}}" onClick="ga('send', 'event', 'button', 'clicked', 'player', 'source')">Source</a>
+        <div class="nextCounter hollow button secondary small">Next in <span id="counter"></span></div>
+      </div>
+    </div>
+  </div>
+  <div class="streamWrapper">
+
+    <ul class="streamTabs button-group expand">
+      <li ng-class="{'is-active': selectedChannel!='!notByUser' && selectedChannel!=currentUser.userName}">
+        <a href="#" ng-click="filterByChannelAll('')"> <i class="fa fa-bolt" aria-hidden="true"></i> ALL </a>
+      </li>
+      <li ng-class="{'is-active': selectedChannel=='!notByUser'}">
+        <a href="#" ng-click="filterByReposts('!notByUser')"> <i class="fa fa-retweet" aria-hidden="true"></i></a>
+      </li>
+      <li ng-class="{'is-active': selectedChannel==currentUser.userName}">
+        <a href="#" ng-click="filterByCurrentUser(currentUser.userName)"> <i class="fa fa-bookmark" aria-hidden="true"></i></a>
+      </li>
+    </ul>
+
+    <div class="channelsListNav" ng-if="selectedChannel!='!notByUser' && selectedChannel!=currentUser.userName" ng-click="toggleSwitchChannel($event)">
+      <section class="block-list grid-content" >
+        <header>
+          WATCHING:
+          <span ng-if="selectedChannel == ''"> EVERYTHING</span>
+          <span ng-if="selectedChannel != ''"> {{selectedChannel}}</span>
+          <i class="fa fa-2x fa-caret-down" aria-hidden="true"></i>
+        </header>
+        <ul>
+          <li>
+            <input type="radio" name="channelsListNav" id="allchannels" value="allchannels" checked="">
+            <label ng-click="filterByChannelAll()" class="radioActive" for="allchannels">EVERYTHING</label>
+          </li>
+          <li ng-repeat="watching in subscriptionList">
+           <input type="radio" name="channelsListNav" id="{{watching.name}}" value="{{watching.name}}" >
+           <label ng-click="filterByChannel($event, watching)" for="{{watching.name}}">{{watching.name}}</label>
+         </li>
+        </ul>
+      </section>
+    </div>
+
+    <ul class="streamTabs newHot button-group expand">
+      <li ng-class="{'is-active': order=='timestamp'}">
+        <a href="#" ng-click="setOrder('timestamp')">  NEW </a>
+      </li>
+      <li ng-class="{'is-active': order=='rating'}">
+        <a href="#" ng-click="setOrder('rating')">  HOT</a>
+      </li>
+    </ul>
+
+    <div class="emptyState" ng-if="selectedChannel!=currentUser.userName" ng-class="{'hideLoading': combined.length!='0'}">
+      <div class="drip"></div>
+    </div>
+    <div class="emptyState library grid-content" ng-if="selectedChannel==currentUser.userName" ng-hide="combined.length">
+      <p class="text-center" >
+        <i class="fa fa-5x fa-bookmark-o"></i>
+        <h3 class="text-center">YOUR LIBRARY</h3>
+        <div class="text-center explanation">The PocketWatch Button, lets you <b>Save</b> videos to your library, and <b>Repost</b> videos to the <a href="" ng-click="filterByChannelAll()">stream</a> for others to enjoy!</div>
+        <br /><br />
+        <button class="getExtenstionFeedButton button hollow" onclick="chrome.webstore.install()" id="install-button">
+          GET CHROME EXTENSION
+        </button>
+        <br />
+        <div class="tagline">
+          When watching a video on Youtube, the extension button will light up.<br />
+          <b>Press it. Save it. Share it! </b>
+        </div>
+      </p>
+    </div>
+    <div class="emptyState libraryHeader grid-block" ng-if="selectedChannel==currentUser.userName" ng-show="combined.length">
+      <div class="grid-content small-1">
+        <i class="fa fa-2x fa-bookmark-o"></i>
+      </div>
+      <div class="grid-content small-10">
+        <h6 class="text-left">YOUR LIBRARY</h3>
+        <div class="tagline text-left">
+          {{combined.length}} saved video<span ng-if="combined.length!=1">s</span>
+        </div>
+      </div>
+    </div>
+    <div class="stream" ng-class="{'show': combined.length!='1'}">
+      <div class="videoItem" ng-repeat="video in (combined = (redditVideos.concat(wpPosts, ytvideos) | filter: selectedChannel | unique: 'id' | orderBy:order:true) ) track by $index" ng-class="$first ? 'playing' : ''" ng-click="sendIndex($index, video); setPlayingVideo(video); setNextVideo(combined[$index +1]); setPrevVideo(combined[$index -1]); myplayer.playVideo();" >
+
+        <div ng-if="selectedChannel!=currentUser.userName">
+          <div class="dark card" style="background-image: url('{{video.thumbnail}}');" >
+            <div class="gradient"></div>
+            <div class="card-section {{video.host}}">
+              <h1>{{video.title | limitTo: 95}}</h1>
+              <div ng-click="clickToPlay($event, video)" class="content {{video.host}} watch" rel="{{video.permalink}}" id="{{video.id}}">
+                <div class="host">
+                  <img class="hostImage {{video.host}}" src="{{video.hostImage}}" />
+                  <div class="hostName" >
+                    <span>{{video.author}}</span>
+                    <div class="hostTime">
+                      <span class="redditPost"><i class="fa fa-clock-o" aria-hidden="true"></i> </span>
+                      {{video.date}}
+                    </div>
+                  </div>
+                </div>
+                <a style="display: none;" href="#" ng-click="clickToPlay($event)" name="{{video.wpId}}" class="{{video.host}} wpId-{{video.wpId}} watch  button small" rel="{{video.permalink}}" id="{{video.id}}">
+                  watch
+                </a>
+              </div>
+            </div>
+            <div class="cardActions">
+              {{video.rating | number}} {{video.upvotes}}<span ng-hide="video.rating==1">s</span>
+              <!-- {{video.commentsCount | number}} {{video.comments }} -->
+              <div ng-hide="video.authorId=='notByUser'" class="float-right">
+                <i class="fa fa-retweet" aria-hidden="true"></i> {{video.wpUser}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div ng-if="selectedChannel==currentUser.userName" ng-click="clickToPlay($event, video)" class="grid-block list-card content {{video.host}} watch" rel="{{video.permalink}}" id="{{video.id}}">
+          <div class="list-card-thumbnail small-3 grid-content" style="background-image: url('{{video.thumbnail}}');" >
+          </div>
+          <div class="list-card-details small-9 grid-content">
+            <h3>{{video.title | limitTo: 95}}</h3>
+            <div>{{video.rating | number}} {{video.upvotes}}<span ng-hide="video.rating==1">s</span> | {{video.timestamp | date:'MMM d, yyyy'}}</div>
+          </div>
+          <a style="display: none;" href="#" ng-click="clickToPlay($event)" name="{{video.wpId}}" class="{{video.host}} wpId-{{video.wpId}} watch  button small" rel="{{video.permalink}}" id="{{video.id}}">
+            watch
+          </a>
+        </div>
+      </div>
+  </div>
+
+
+
+
+
 </div>

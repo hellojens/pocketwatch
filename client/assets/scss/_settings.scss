@@ -36,86 +36,114 @@
 
 // Change any value in this map from "true" to "false" to disable that component's CSS class output. You'll still be able to use the component's mixins, but none of our pre-written classes will be in your CSS.
 
-// $include-css: (
-//   accordion: true,
-//   action-sheet: true,
-//   block-list: true,
-//   button: true,
-//   button-group: true,
-//   card: true,
-//   coloring: true,
-//   extras: true,
-//   forms: true,
-//   grid: true,
-//   iconic: true,
-//   label: true,
-//   badge: true,
-//   list: true,
-//   menu-bar: true,
-//   modal: true,
-//   motion: true,
-//   notification: true,
-//   off-canvas: true,
-//   panel: true,
-//   popup: true,
-//   switch: true,
-//   tabs: true,
-//   title-bar: true,
-//   typography: true,
-//   utilities: true,
-// ); 
+$include-css: (
+  accordion: true,
+  action-sheet: true,
+  block-list: true,
+  button: true,
+  button-group: true,
+  card: true,
+  coloring: true,
+  extras: true,
+  forms: true,
+  grid: true,
+  iconic: true,
+  label: true,
+  badge: true,
+  list: true,
+  menu-bar: true,
+  modal: true,
+  motion: true,
+  notification: true,
+  off-canvas: true,
+  panel: true,
+  popup: true,
+  switch: true,
+  tabs: true,
+  title-bar: true,
+  typography: true,
+  utilities: true,
+);
 
 // 2. Global Styles
 // - - - - - - - - - - - - - - -
 
 // This sets 1rem to be 16px
-// $rem-base: 16px;
+$rem-base: 16px;
 
 // The default font-size is set to 100% of the browser style sheet (usually 16px)
 // for compatibility with browser-based text zoom or user-set defaults.
-
+//
 // Since the typical default browser font-size is 16px, that makes the calculation for grid size.
 // If you want your base font-size to be different and not have it affect the grid breakpoints,
 // set $rem-base to $base-font-size and make sure $base-font-size is a px value.
-// $base-font-size: 100%;
+$base-font-size: 100%;
 
 // $base-line-height is 24px while $base-font-size is 16px
-// $base-line-height: 1.5;
+$base-line-height: 1.5;
 
 // Text selector helpers
-// $headers: "h1,h2,h3,h4,h5,h6";
+$headers: "h1,h2,h3,h4,h5,h6";
 
 // We use these to define default font weights
-// $font-weight-normal: normal;
-// $font-weight-bold: bold;
+$font-weight-normal: normal;
+$font-weight-bold: bold;
 
 // We use these to control various global styles
-// $body-background: #fff;
-// $body-font-color: #222;
-// $body-font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
-// $body-font-weight: $font-weight-normal;
-// $body-font-style: normal;
-// $body-antialiased: true;
+$body-background: #000;
+$body-font-color: #0f222b;
+$body-font-family: "Montserrat", Helvetica, Roboto, Arial, sans-serif;
+$body-font-weight: $font-weight-normal;
+$body-font-style: normal;
+$body-antialiased: true;
 
 // Application Colors
-// $primary-color: #00558b;
-// $secondary-color: #f1f1f1;
-// $alert-color: #F04124;
-// $info-color: #A0D3E8;
-// $success-color: #43AC6A;
-// $warning-color: #F08A24;
-// $dark-color: #232323;
-// $gray: #dfdfdf;
-// $gray-dark: darken($gray, 8);
-// $gray-light: lighten($gray, 8);
+$primary-color: #ec5840;
+$secondary-color: #aaa;
+$alert-color: #ec5840;
+$info-color: #A0D3E8;
+$success-color: #43AC6A;
+$warning-color: #F08A24;
+$dark-color: #232323;
+$gray: #aaa;
+$gray-dark: darken($gray, 8);
+$gray-light: lighten($gray, 8);
 
 // We use these to make sure border radius matches unless we want it different.
-// $global-radius: 4px;
-// $global-rounded: 1000px;
+$global-radius: 3px;
+$global-rounded: 1000px;
 
 // We use this for default spacing
-// $global-padding: 1rem;
-// $global-spacing: rem-calc(15); 
+$global-padding: 1rem;
+$global-spacing: rem-calc(15);
+
+.flex-video {
+  position: relative;
+  height: 0;
+  padding-top: 1.5625rem;
+  padding-bottom: 75%;
+  overflow: hidden;
+}
+
+.flex-video iframe,
+.flex-video object,
+.flex-video embed,
+.flex-video video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.flex-video.widescreen {
+  padding-bottom: 56.25%;
+}
+
+.flex-video.vimeo {
+  padding-top: 0;
+}
+
 
 // 3. Breakpoints
 // - - - - - - - - - - - - - - -
@@ -130,7 +158,7 @@
 // );
 
 // All of the names in this list will be output as classes in your CSS, like small-12, medium-6, and so on.
-// $breakpoint-classes: (small medium large); 
+// $breakpoint-classes: (small medium large);
 
 // 4. Typography
 // - - - - - - - - - - - - - - -
@@ -228,15 +256,15 @@
 // $blockquote-cite-link-color: $blockquote-cite-font-color;
 
 // Acronym styles
-// $acronym-underline: 1px dotted #ddd; 
+// $acronym-underline: 1px dotted #ddd;
 
 // 5. Grid
 // - - - - - - - - - - - - - - -
 
-// $container-width: rem-calc(900);
-// $block-padding: $global-padding;
-// $total-columns: 12;
-// $block-grid-max-size: 6; 
+$container-width: rem-calc(900);
+$block-padding: $global-padding;
+$total-columns: 12;
+$block-grid-max-size: 6;
 
 // 6. Button
 // - - - - - - - - - - - - - - -
@@ -255,7 +283,7 @@
 // );
 // $button-font-size: 0.9rem;
 // $button-opacity-disabled: 0.5;
-// $button-tag-selector: false; 
+// $button-tag-selector: false;
 
 // 7. Accordion
 // - - - - - - - - - - - - - - -
@@ -269,7 +297,7 @@
 // $accordion-title-color-active: isitlight($accordion-title-background);
 
 // $accordion-title-padding: $global-padding;
-// $accordion-content-padding: $global-padding; 
+// $accordion-content-padding: $global-padding;
 
 // 8. Action Sheet
 // - - - - - - - - - - - - - - -
@@ -287,36 +315,45 @@
 // $actionsheet-popup-shadow: 0 0 10px rgba(black, 0.25);
 
 // $actionsheet-link-color: #000;
-// $actionsheet-link-background-hover: smartscale($actionsheet-background); 
+// $actionsheet-link-background-hover: smartscale($actionsheet-background);
 
 // 9. Block List
 // - - - - - - - - - - - - - - -
 
-// $blocklist-background: #fff;
-// $blocklist-fullbleed: true;
-// $blocklist-fontsize: 1rem;
+$blocklist-background: #fff;
+$blocklist-fullbleed: false;
+$blocklist-fontsize: 0.75rem;
 
-// $blocklist-item-padding: 0.8rem 1rem;
-// $blocklist-item-color: isitlight($blocklist-background, #000, #fff);
-// $blocklist-item-background-hover: smartscale($blocklist-background, 4.5%);
-// $blocklist-item-color-disabled: #999;
-// $blocklist-item-border: 1px solid smartscale($blocklist-background, 18.5%);
+$blocklist-item-padding: 0.8rem 0.6rem 0.8rem 0.6rem;
+$blocklist-item-color: white;
+$blocklist-item-background-hover: #282828;
+$blocklist-item-color-disabled: #999;
+$blocklist-item-border: 1px solid smartscale(#222, -12%);
 
-// $blocklist-item-label-color: scale-color($blocklist-item-color, $lightness: 60%);
-// $blocklist-item-icon-size: 0.8;
+$blocklist-item-label-color: scale-color(#222, -8%);
+$blocklist-item-icon-size: 0.6;
 
-// $blocklist-header-fontsize: 0.8em;
-// $blocklist-header-color: smartscale($blocklist-item-color, 40%);
-// $blocklist-header-uppercase: true;
+$blocklist-header-fontsize: 0.8em;
+$blocklist-header-color: white;
+$blocklist-header-uppercase: true;
 
-// $blocklist-check-icons: true; 
+$blocklist-check-icons: true;
+
+.block-list header {
+  cursor: pointer !important;
+  margin-bottom: 1em !important;
+  &:hover {
+    color: #eee;
+  }
+}
+
 
 // 10. Button Group
 // - - - - - - - - - - - - - - -
 
 // $btngroup-background: $primary-color;
 // $btngroup-color: #fff;
-// $btngroup-radius: $button-radius; 
+// $btngroup-radius: $button-radius;
 
 // 11. Card
 // - - - - - - - - - - - - - - -
@@ -329,7 +366,7 @@
 // $card-padding: $global-padding;
 // $card-margin: 0.5rem;
 
-// $card-divider-background: smartscale($card-background, 7%); 
+// $card-divider-background: smartscale($card-background, 7%);
 
 // 12. Extras
 // - - - - - - - - - - - - - - -
@@ -341,25 +378,25 @@
 // $closebutton-color-hover: #333;
 
 // $thumbnail-padding: 0.5rem;
-// $thumbnail-shadow: 0 3px 15px rgba(black, 0.25); 
+// $thumbnail-shadow: 0 3px 15px rgba(black, 0.25);
 
 // 13. Forms
 // - - - - - - - - - - - - - - -
 
 // Basic form variables
-// $form-fontsize: 1rem;
-// $form-padding: 0.5rem;
+$form-fontsize: 0.8rem;
+$form-padding: 0.7rem;
 
 // Text fields
-// $input-color: #000;
-// $input-color-hover: $input-color;
-// $input-color-focus: $input-color;
-// $input-background: #fff;
-// $input-background-hover: $input-background;
-// $input-background-focus: $input-background;
-// $input-border: 1px solid #ccc;
-// $input-border-hover: 1px solid #bbb;
-// $input-border-focus: 1px solid #999;
+$input-color: #000;
+$input-color-hover: $input-color;
+$input-color-focus: $input-color;
+$input-background: #fff;
+$input-background-hover: $input-background;
+$input-background-focus: $input-background;
+$input-border: 1px solid #ccc;
+$input-border-hover: 1px solid #bbb;
+$input-border-focus: 1px solid #999;
 
 // Select menus
 // $select-color: #000;
@@ -393,7 +430,7 @@
 // $meter-fill-high: $success-color;
 // $meter-fill-medium: #e7cf00;
 // $meter-fill-low: $alert-color;
-// $meter-radius: 0; 
+// $meter-radius: 0;
 
 // 14. Iconic
 // - - - - - - - - - - - - - - -
@@ -401,7 +438,7 @@
 // $iconic-primary-fill: $primary-color;
 // $iconic-primary-stroke: $primary-color;
 // $iconic-accent-fill: $iconic-primary-fill;
-// $iconic-accent-stroke: $iconic-accent-fill; 
+// $iconic-accent-stroke: $iconic-accent-fill;
 
 // 15. Label
 // - - - - - - - - - - - - - - -
@@ -420,7 +457,7 @@
 // DEPRECATED: these variables will be removed in v1.1.
 // $badge-padding: .1em .61em;
 // $badge-radius: $global-rounded;
-// $badge-font-color: #fff; 
+// $badge-font-color: #fff;
 
 // 16. Menu Bar
 // - - - - - - - - - - - - - - -
@@ -435,25 +472,25 @@
 
 // $menubar-item-padding: $global-padding;
 // $menubar-icon-size: 25px;
-// $menubar-icon-spacing: $menubar-item-padding; 
+// $menubar-icon-spacing: $menubar-item-padding;
 
 // 17. Modal
 // - - - - - - - - - - - - - - -
 
-// $modal-background: #fff;
-// $modal-border: 0;
-// $modal-radius: 0px;
-// $modal-shadow: none;
-// $modal-zindex: 1000;
-// $modal-sizes: (
-//   tiny: 300px,
-//   small: 500px,
-//   medium: 600px,
-//   large: 800px,
-// );
+$modal-background: #fff;
+$modal-border: 0;
+$modal-radius: 3px;
+$modal-shadow: -1px 4px 6px rgba(0, 0, 0, 0.09);
+$modal-zindex: 1000;
+$modal-sizes: (
+  tiny: 300px,
+  small: 500px,
+  medium: 600px,
+  large: 800px,
+);
 
-// $modal-overlay-class: 'modal-overlay';
-// $modal-overlay-background: rgba(#333, 0.7); 
+$modal-overlay-class: 'modal-overlay';
+$modal-overlay-background: rgba(#333, 0.7);
 
 // 18. Motion UI
 // - - - - - - - - - - - - - - -
@@ -506,7 +543,7 @@
 // $motion-delay-default: 0;
 // Short and long delay modifiers
 // $motion-delay-short: 300ms;
-// $motion-delay-long: 700ms; 
+// $motion-delay-long: 700ms;
 
 // 19. Notification
 // - - - - - - - - - - - - - - -
@@ -523,7 +560,7 @@
 // $notification-icon-size: 60px;
 // $notification-icon-margin: $global-padding;
 // $notification-icon-align: top;
- 
+
 
 // 20. Off-canvas
 // - - - - - - - - - - - - - - -
@@ -537,7 +574,7 @@
 // $offcanvas-shadow: 3px 0 10px rgba(black, 0.25);
 // $offcanvas-animation-speed: 0.25s;
 
-// $offcanvas-frame-selector: '.grid-frame'; 
+// $offcanvas-frame-selector: '.grid-frame';
 
 // 21. Panel
 // - - - - - - - - - - - - - - -
@@ -548,7 +585,7 @@
 
 // $panel-background: #fff;
 // $panel-shadow: 3px 0 10px rgba(black, 0.25);
-// $panel-animation-speed: 0.25s; 
+// $panel-animation-speed: 0.25s;
 
 // 22. Popup
 // - - - - - - - - - - - - - - -
@@ -557,7 +594,7 @@
 // $popup-background: #fff;
 // $popup-border: 0;
 // $popup-radius: 0;
-// $popup-shadow: 0 0 10px rgba(#000, 0.25); 
+// $popup-shadow: 0 0 10px rgba(#000, 0.25);
 
 // 23. Switch
 // - - - - - - - - - - - - - - -
@@ -571,21 +608,31 @@
 // $switch-animation-speed: 0.15s;
 
 // $switch-paddle-color: white;
-// $switch-paddle-offset: 4px; 
+// $switch-paddle-offset: 4px;
 
 // 24. Tabs
 // - - - - - - - - - - - - - - -
 
-// $tabstrip-background: transparent;
+$tabstrip-background: transparent;
 
-// $tab-title-background: $gray-light;
-// $tab-title-background-hover: smartscale($tab-title-background, 5%);
-// $tab-title-background-active: smartscale($tab-title-background, 3%);
-// $tab-title-color: isitlight($tab-title-background);
-// $tab-title-color-active: $tab-title-color;
+$tab-title-background: white;
+$tab-title-background-hover: smartscale($tab-title-background, 3%);
+$tab-title-background-active: smartscale($tab-title-background, 5%);
+$tab-title-color: isitlight($tab-title-background);
+$tab-title-color-active: $tab-title-color;
 
-// $tab-title-padding: $global-padding;
-// $tab-content-padding: $global-padding; 
+$tab-title-padding: $global-padding;
+$tab-content-padding: 1rem 0rem;
+
+.tabs .tab-item {
+  flex: 1 1 auto !important;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 14px;
+  border: 1px solid #eee;
+  margin-top: 1rem !important;
+}
+
 
 // 25. Title Bar
 // - - - - - - - - - - - - - - -
@@ -601,4 +648,4 @@
 //   left: 'left',
 //   right: 'right',
 //   title: 'title',
-// ); 
+// );
