@@ -176,6 +176,7 @@
           &.show {
             width: auto;
             max-height: 600px;
+            min-height: 130px;
             max-width: 796px;
             margin-left: 30px;
             border-left: 1px solid #CCCCCC;
@@ -213,15 +214,41 @@
     background: -ms-radial-gradient(center, ellipse cover, rgba(240,240,240,1) 0%, rgba(224,224,224,1) 47%, rgba(204,204,204,1) 100%);
     background: radial-gradient(ellipse at center, rgba(240,240,240,1) 0%, rgba(224,224,224,1) 47%, rgba(204,204,204,1) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0f0f0', endColorstr='#cccccc', GradientType=1 );
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
     z-index: 99999999999999999;
     text-align: center;
     padding-top: 100px;
     img {
-      width: 200px;
+      width: 180px;
+    }
+    .googleButton {
+      background: #dd4b39;
+      color: white;
+      border: 0;
+    }
+    .facebookButton {
+      background: #3b5998;
+      color: white;
+      border: 0;
+    }
+    .signInIntro {
+      color: #333;
+      padding: 0px 20px 40px 20px;
+      max-width: 50%;
+      font-size: 13px;
+      margin: 0 auto;
+    }
+    .signInFooter {
+      position: absolute;
+      bottom: 20px;
+      margin: 0 auto;
+      font-size: 12px;
+      width: 100%;
+      text-align: center;
+      color: #888;
     }
   }
   .modalz {
@@ -412,7 +439,6 @@
     top: 0;
     right: 0px;
     overflow-y: scroll;
-    overflow-x: hidden;
     min-width: 250px;
     box-shadow: -2px 1px 10px rgba(0, 0, 0, 0.56);
 
@@ -463,11 +489,11 @@
 
     .stream {
       opacity: 0;
-      top: 0;
-      bottom: 0;
-      height: 100%;
-      overflow: auto;
-      padding-bottom: 50px;
+      // top: 0;
+      // bottom: 0;
+      // height: 100%;
+      // overflow: auto;
+      // padding-bottom: 50px;
       &.show {
         opacity: 1;
         transition-property: opacity;
@@ -751,9 +777,8 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 100%;
   width: 100%;
-  display: block;
+  height: 100%;
   opacity: 1;
   text-align: center;
   padding-top: 10%;
@@ -764,10 +789,15 @@
     transition-timing-function: ease;
     transition-delay: 1s;
     height: 0;
+    padding: 0;
   }
-  .library {}
+  &.library {
+    height: auto;
+  }
   &.libraryHeader {
     padding: 0;
+    height: auto;
+
     i {
       font-size: 32px;
       margin-left: -3px;

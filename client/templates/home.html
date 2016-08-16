@@ -13,7 +13,7 @@ url: /
       CHANNELS <i class="fa fa-caret-down fa-lg" aria-hidden="true"></i>
       </button>
       <button class="addNewButton alert button" zf-open="addNewChannelModal">
-        ADD NEW {{getPctCompleted}}
+        ADD NEW
       </button>
       <button class="addNewButton alert button hollow" zf-open="addExtensionModal" id="install-button">
         GET CHROME EXTENSION
@@ -109,12 +109,23 @@ url: /
       <div ng-hide="currentUser.userName" class="signIn float-right">
         <img src="http://pocketwatchit.com/wp-content/uploads/2016/05/app-icon-big.png" /><br />
         <h2><b>POCKETWATCH</b></h2><br />
-        <button class="addNewButton dark hollow button" zf-open="signInModal">
-          Sign in
+        <p class="signInIntro">
+          Inspired by reddit.tv and SoundCloud, this project let's you curate your own video stream. Subscribe to your favorit subreddit's and Youtube Channels. Save and Share your findings, and enjoy a simple and smart viewing experience.
+        </p>
+        <button class="googleButton" g-login type="button">
+          Sign in with Google
         </button>
+        <button class="facebookButton" fb-login type="button">
+          Sign in with Facebook</button>
+        <br /><br />
+        <button class="addNewButton dark hollow button" zf-open="signInModal">
+          Sign in the old way
+        </button>
+        <div class="signInFooter">
+          I would love to get some Feedback: jk@hellojens.com
+        </div>
         <div class="modalz tiny text-center" zf-modal="" id="signInModal">
           <a zf-close="" class="close-button">×</a>
-
           <div zf-tabs="" >
             <div zf-tab="" title="Log In">
               <form method="post">
@@ -134,19 +145,19 @@ url: /
             <div zf-tab="" title="Sign Up">
               <form name="createNewUser">
                 <div class="align-center grid-block">
-                  <input type="text" ng-model="$parent.createUserInput.username" placeholder="Username" required>
+                  <input type="text" id="username" ng-model="$parent.createUserInput.username" placeholder="Username" required>
                 </div>
                 <div class="align-center grid-block">
-                  <input type="text" ng-model="$parent.createUserInput.usernameDisplayName" placeholder="Your Pretty Name">
+                  <input type="text" id="usernameDisplayName" ng-model="$parent.createUserInput.usernameDisplayName" placeholder="Your Pretty Name">
                 </div>
                 <div class="align-center grid-block">
-                  <input type="email" ng-model="$parent.createUserInput.email" placeholder="Email">
+                  <input type="email" id="email" ng-model="$parent.createUserInput.email" placeholder="Email">
                 </div>
                 <div class="align-center grid-block">
-                  <input type="password" ng-model="$parent.createUserInput.password" placeholder="Password" required>
+                  <input type="password" id="Npassword" ng-model="$parent.createUserInput.password" placeholder="Password" required>
                 </div>
                 <div class="align-center grid-block">
-                  <button ng-disabled="createNewUser.$invalid" class="signInButton expand button" type="submit" ng-click="$parent.createNewUser()">
+                  <button ng-disabled="createNewUser.$invalid" class="signInButton expand button" type="submit" ng-click="$parent.createUser()">
                     createUser
                   </button>
                 </div>
@@ -161,7 +172,7 @@ url: /
         </div>
       </div>
     </div>
-    <div class="menuOverlayBackDrop"  ng-click="showMenuOverlay($event)">
+    <div class="menuOverlayBackDrop" ng-click="showMenuOverlay($event)">
     </div>
     <div class="menuOverlay">
       <div class="menuContent">
@@ -170,24 +181,19 @@ url: /
             <h5>CHANNELS</h5>
             <ul class="menuListNav">
               <li class="menuListItem">
-                <a href="" ng-click="showSlideOut($event)">
+                <a href="" ng-mouseover="showSlideOut('redditMenu')">
                   <span>Reddit</span>
                   <i class="icon fa fa-caret-right fa-lg" aria-hidden="true"></i>
                 </a>
               </li>
               <li class="menuListItem">
-                <a href="">
+                <a href="" ng-mouseover="showSlideOut('youtubeMenu')">
                   <span>Youtube</span>
                   <i class="icon fa fa-caret-right fa-lg" aria-hidden="true"></i>
                 </a>
               </li>
-              <li class="menuListItem">
-                <a href="">
-                  <span>Vimeo</span>
-                  <i class="icon fa fa-caret-right fa-lg" aria-hidden="true"></i>
-                </a>
-              </li>
             </ul>
+            <!--
             <h6>Recently viewed</h6>
             <ul class="menuListNav">
               <li class="menuListItem">
@@ -206,18 +212,32 @@ url: /
                 </a>
               </li>
             </ul>
+            -->
           </div>
           <div class="slideOut">
             <div class="menuList">
-              <h5>Reddit</h5>
-              <ul class="menuListNav">
-                  <li class="menuListItem" ng-repeat="list in subscriptionList">
-                       <a href="#">
-                         <span>{{list.name}}</span>
-                         <i ng-click="subredditList.remove($index)" class="icon fa fa-close fa-lg" aria-hidden="true"></i>
-                       </a>
-                  </li>
-              </ul>
+              <div ng-if="selectedMenu=='redditMenu'">
+                <h5>Reddit</h5>
+                <ul class="menuListNav">
+                    <li class="menuListItem" ng-repeat="list in subscriptionList">
+                         <a href="#"  ng-if="list.name.indexOf('/') > -1">
+                           <span>{{list.name | limitTo: 40}}</span>
+                           <i ng-click="subredditList.remove($index)" class="icon fa fa-close fa-lg" aria-hidden="true"></i>
+                         </a>
+                    </li>
+                </ul>
+              </div>
+              <div ng-if="selectedMenu=='youtubeMenu'">
+                <h5>Youtube</h5>
+                <ul class="menuListNav">
+                    <li class="menuListItem" ng-repeat="list in subscriptionList" >
+                         <a href="#" ng-hide="list.name.indexOf('/') > -1">
+                           <span>{{list.name | limitTo: 40}}</span>
+                           <i ng-click="subredditList.remove($index)" class="icon fa fa-close fa-lg" aria-hidden="true"></i>
+                         </a>
+                    </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
@@ -319,9 +339,10 @@ url: /
         </div>
       </div>
     </div>
-    <div class="stream" ng-class="{'show': combined.length!='1'}" when-scrolled="loadMore()" percent="70">
+    <div class="stream" ng-class="{'show': combined.length!='1'}">
+    <!-- <div class="stream" ng-class="{'show': combined.length!='1'}" when-scrolled="loadMore()" percent="70"> -->
 
-      <div class="videoItem" ng-repeat="video in (combined = (redditVideos.concat(wpPosts, ytvideos) | filter: selectedChannel | unique: 'id' | limitTo: totalDisplayed | orderBy:order:true) ) track by $index" ng-class="$first ? 'playing' : ''" ng-click="sendIndex($index, video); setPlayingVideo(video); setNextVideo(combined[$index +1]); setPrevVideo(combined[$index -1]); myplayer.playVideo();" >
+      <div class="videoItem" ng-repeat="video in (combined = (redditVideos.concat(wpPosts, ytvideos) | filter: selectedChannel | unique: 'id' | orderBy:order:true) ) track by $index" ng-class="$first ? 'playing' : ''" ng-click="sendIndex($index, video); setPlayingVideo(video); setNextVideo(combined[$index +1]); setPrevVideo(combined[$index -1]); myplayer.playVideo();" >
 
         <div ng-if="selectedChannel!=currentUser.userName">
           <div class="dark card" style="background-image: url('{{video.thumbnail}}');" >

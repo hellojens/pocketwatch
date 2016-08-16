@@ -11,9 +11,14 @@
     'foundation.dynamicRouting.animations',
     'youtube-embed',
     'videosharing-embed',
+    'socialLogin',
     'angular-scroll-complete'
   ])
     .config(config)
+    .config(function(socialProvider){
+      socialProvider.setGoogleKey("1098062714451-atu23gidthdu6gcoo3n6ciug432sc4rq.apps.googleusercontent.com");
+      socialProvider.setFbKey({appId: "185893945163328", apiVersion: "v2.7"});
+    })
     .run(run)
     .controller('mainController', mainController)
     .filter('orderObjectBy', function() {
@@ -49,10 +54,10 @@
   ;
 
 
-  config.$inject = ['$urlRouterProvider', '$locationProvider', '$httpProvider'];
-  mainController.$inject = ['$scope', '$stateParams', '$state', '$controller', '$http', 'youtubeEmbedUtils', '$q', '$timeout', '$interval'];
+  config.$inject = ['$urlRouterProvider', '$locationProvider', '$httpProvider', 'socialProvider'];
+  mainController.$inject = ['$scope', '$rootScope', '$stateParams', '$state', '$controller', '$http', 'youtubeEmbedUtils', '$q', '$timeout', '$interval'];
 
-  function config($urlProvider, $locationProvider, $httpProvider, $q, $scope, $timeout, $interval) {
+  function config($urlProvider, $locationProvider, $httpProvider, $q, $scope, $timeout, $interval, socialProvider) {
 
     $httpProvider.interceptors.push( [ function( ) {
       return {
@@ -83,16 +88,19 @@
     return value;
   }
 
+  function mainController($scope, $rootScope, $stateParams, $state, $controller, $http, youtubeEmbedUtils, $q, $timeout, $interval) {
 
-
-  function mainController($scope, $stateParams, $state, $controller, $http, youtubeEmbedUtils, $q, $timeout, $interval) {
-    $scope.showMenuOverlay = function($event) {
-      $(".menuOverlay").toggle();
-      $(".menuOverlayBackDrop").toggle();
+    $scope.selectedMenu = "";
+    $scope.showSlideOut = function(seletedMenu) {
+      $scope.selectedMenu = seletedMenu;
+      $(".slideOut").addClass("show");
     }
 
-    $scope.showSlideOut = function($event) {
-      $(".slideOut").toggleClass("show");
+    $scope.showMenuOverlay = function($event) {
+      $scope.selectedMenu = "";
+      $(".slideOut").removeClass("show");
+      $(".menuOverlay").toggle();
+      $(".menuOverlayBackDrop").toggle();
     }
 
     $scope.videoById = [];
@@ -105,7 +113,7 @@
       } else if ( $('.playing a').hasClass("vimeo.com") ){
         $scope.videoByUrl = $('.playing a').attr("id");
         $(".vimeoPlayer").show();
-        console.log("vim")
+
       }
       setTimeout(function() {
         $('.videoItem.playing').triggerHandler('click');
@@ -250,6 +258,7 @@
       $scope.order = order;
     };
 
+
     var apiHost = 'http://pocketwatchit.com/wp-json';
     var wpToken = localStorage.getItem('userToken');
     var wpUserName = localStorage.getItem('userName');
@@ -304,7 +313,7 @@
 
     // Create New User
     $scope.createUserInput = []
-    $scope.createNewUser = function ($event) {
+    var createNewUser = function() {
 
       // Get signup info
       var newUsername =  $scope.createUserInput.username;
@@ -324,15 +333,32 @@
           signInAction(newUsername, newPassword);
 
         }).catch(function( error ){
+          signInAction();
           $scope.validationMessage = error.data.error;
         });
 
       });
     }
 
+    // Google sign in
+    $rootScope.$on('event:social-sign-in-success', function(event, userDetails){
+      console.log(userDetails)
+      $scope.signInInput.username = userDetails.name.split(' ').join('')
+      $scope.signInInput.password = userDetails.uid
+      $scope.createUserInput.username = userDetails.name.split(' ').join('')
+      $scope.createUserInput.usernameDisplayName = userDetails.name
+      $scope.createUserInput.email = userDetails.email
+      $scope.createUserInput.password = userDetails.uid
+      createNewUser();
+    })
+
     // Sign Exsisting user in
     $scope.signIn = function ($event) {
       signInAction();
+    }
+    // Sign Exsisting user in
+    $scope.createUser = function ($event) {
+      createNewUser();
     }
 
     // Sign All Out
@@ -364,7 +390,6 @@
       .then( function(userResponse) {
         wpUserId = userResponse.data.body.id;
         wpUserDescription = userResponse.data.body.description;
-        console.log(wpUserDescription)
 
         // if (typeof localStorage["subscriptionList"] !== "undefined") {
         //   console.log("locastorage fucked")
@@ -372,13 +397,11 @@
         //                       JSON.parse(localStorage.getItem('subscriptionList')) : "";
         //   localStorage.setItem('subscriptionList', JSON.stringify($scope.subscriptionList, replacer));
         // } else {
-          console.log("locastorage fine")
+
           if (wpUserDescription === "") {
-            console.log("ooo empty")
             $scope.subscriptionList = [];
             localStorage.setItem('subscriptionList', '');
           } else {
-            console.log("ooo not empty")
             $scope.subscriptionList = JSON.parse(wpUserDescription);
             localStorage.setItem('subscriptionList', JSON.stringify($scope.subscriptionList, replacer));
           }
@@ -725,13 +748,13 @@
     });
 
 
-    $scope.totalDisplayed = 10;
-    $scope.loadMore = function () {
-      console.log("load")
-     $scope.totalDisplayed += 20;
-    };
-
-    $scope.loadMore();
+    $scope.totalDisplayed = 100;
+    // $scope.loadMore = function () {
+    //   console.log("load")
+    //  $scope.totalDisplayed += 20;
+    // };
+    //
+    // $scope.loadMore();
 
 
     // TEMP VIMEO GET GET
